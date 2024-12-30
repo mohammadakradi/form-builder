@@ -18,7 +18,10 @@
                 [maxLength]="field.maxLength"
                 (change)="(field.type === 'NEW_PASSWORD' && field.showConfirmPassword) ? checkIdenticalPassword() : null"
                 />
-                @if (formGroup.controls[field.name].invalid) {
+                @if (formGroup.controls[field.name].hasError('apiError')){
+                    <mat-error>{{ formGroup.controls[field.name].getError('apiError') }}</mat-error>
+                }
+                @if (formGroup.controls[field.name].invalid && !formGroup.controls[field.name].hasError('apiError')) {
                     <mat-error>{{ field.errorMessage }}</mat-error>
                 }
                 @if (field.type === 'NEW_PASSWORD') {

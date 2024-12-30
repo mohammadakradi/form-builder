@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DynamicFormService } from './services/dynamic-form.service';
-import { DynamicFormModel } from './models/dynamic-form.model';
+import { DynamicFormModel, SubmitFormModel } from './models/dynamic-form.model';
 import { Subscription } from 'rxjs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
@@ -30,7 +30,7 @@ export class DynamicFormComponent {
   showConfirmPassword: boolean = false;
   passwordFieldName: string = 'password';
 
-  // Confirm Password Fields
+  // Confirm Password Fields' Static Labels
   confirmPasswordFieldName: string = 'confirmPassword';
   confirmPasswordLabel: string = 'Confirm Password';
   passwordMismatchErrorMessage: string = "Password Doesn't Match";
@@ -83,13 +83,29 @@ export class DynamicFormComponent {
     if (password !== confirmPassword) {
       this.formGroup.controls[this.confirmPasswordFieldName].setErrors({ passwordMismatch: true });
     } else {
-      this.formGroup.controls[this.confirmPasswordFieldName].setErrors(null); // Clear errors if they match
+      this.formGroup.controls[this.confirmPasswordFieldName].setErrors(null);
+    }
+  }
+
+  handleApiErrors(apiResponse: any) {
+    if (apiResponse.fieldErrors) {
+      for (const field in apiResponse.fieldErrors) {
+        if (this.formGroup.controls[field]) {
+          this.formGroup.controls[field].setErrors({ apiError: apiResponse.fieldErrors[field] });
+        }
+      }
     }
   }
 
   onSubmit() {
-    let submitData = this.formGroup.value;
-    console.log(submitData)
+    this._dynamicFormService.submitForm(this.formGroup.value).subscribe({
+      next: (resp) => {
+        console.log(resp)
+      },
+      error: (errorResponse) => {
+        this.handleApiErrors(errorResponse)
+      }
+    })
   }
 
   ngOnDestroy(): void {

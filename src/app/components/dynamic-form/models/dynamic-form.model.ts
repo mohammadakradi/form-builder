@@ -34,3 +34,12 @@ export interface FieldModel {
     info?: string;
     showConfirmPassword?: boolean;
 }
+
+export interface SubmitFormModel {
+    identifier: string;
+    username: string;
+    first_name: string;
+    last_name: string;
+    confirmPassword: string;
+    newPassword: string;
+}

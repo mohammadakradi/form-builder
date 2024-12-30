@@ -1,0 +1,79 @@
+<div class="flex flex-col justify-center items-center h-full min-h-screen bg-gray-400">
+  <form [formGroup]="formGroup" (submit)="onSubmit()" class="w-full max-w-lg px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col gap-6 justify-center items-center p-8 sm:p-12 bg-gray-800 rounded-2xl shadow-md">
+      <h1 class="text-xl sm:text-2xl lg:text-3xl text-white font-bold text-center">
+        {{formJsonData.title}}
+      </h1>
+      @for (field of formJsonData.fields; track field) {
+        <div class="flex justify-between items-center gap-4 w-full relative">
+            <mat-form-field class="w-full">
+                <mat-label>{{ field.title }}</mat-label>
+                <input
+                matInput
+                [type]="field.type === 'NEW_PASSWORD' ? (showPassword ? 'text' : 'password') : field.type"
+                [formControlName]="field.name"
+                [matTooltip]="field.description"
+                matTooltipPosition="right"
+                [minLength]="field.minLength"
+                [maxLength]="field.maxLength"
+                (change)="(field.type === 'NEW_PASSWORD' && field.showConfirmPassword) ? checkIdenticalPassword() : null"
+                />
+                @if (formGroup.controls[field.name].invalid) {
+                    <mat-error>{{ field.errorMessage }}</mat-error>
+                }
+                @if (field.type === 'NEW_PASSWORD') {
+                    <mat-icon
+                    (click)="showPassword = !showPassword"
+                    aria-hidden="false"
+                    aria-label="Example visibility icon"
+                    [fontIcon]="showPassword ? 'visibility' : 'visibility_off'"
+                    class="cursor-pointer visibility"
+                    ></mat-icon>
+                }
+            </mat-form-field>
+            @if (field.info) {
+                <mat-icon
+                aria-hidden="false"
+                aria-label="Example info icon"
+                fontIcon="info"
+                [matTooltip]="field.info"
+                matTooltipPosition="below"
+                class="cursor-pointer text-white info-icon"
+                ></mat-icon>
+            }
+        </div>
+        @if (field.type === "NEW_PASSWORD" && field.showConfirmPassword){
+            <div class="flex justify-between items-center gap-4 w-full">
+                <mat-form-field class="w-full">
+                    <mat-label>{{ confirmPasswordLabel }}</mat-label>
+                    <input
+                    matInput
+                    [type]="showConfirmPassword ? 'text' : 'password'"
+                    [formControlName]="confirmPasswordFieldName"
+                    (change)="checkIdenticalPassword()"
+                    />
+                    @if (formGroup.get(confirmPasswordFieldName)?.hasError('passwordMismatch')) {
+                        <mat-error>{{ passwordMismatchErrorMessage }}</mat-error>
+                    }
+                    <mat-icon
+                    (click)="showConfirmPassword = !showConfirmPassword"
+                    aria-hidden="false"
+                    aria-label="Example visibility icon"
+                    [fontIcon]="showConfirmPassword ? 'visibility' : 'visibility_off'"
+                    class="cursor-pointer visibility"
+                    ></mat-icon>
+                </mat-form-field>
+            </div>
+        }
+      }
+      <button
+        type="submit"
+        mat-button
+        [disabled]="!formGroup.valid"
+        class="w-full text-sm sm:text-base lg:text-lg "
+      >
+        {{formJsonData.submitLabel}}
+      </button>
+    </div>
+  </form>
+</div>

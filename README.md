@@ -1,59 +1,94 @@
-# ChaapaarTask
+# Chaapaar Task (Form Builder)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.6.
+Chaapaar Task is an Angular-based dynamic form project that facilitates creating and handling customizable forms with validation, password management, and error handling. This document outlines the project's structure, components, services, models, and testing strategy.
 
-## Development server
+---
 
-To start a local development server, run:
+## Project Overview
 
-```bash
-ng serve
-```
+The project is designed with modularity and scalability in mind. It includes the following main components:
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+1. **Dynamic Form Component**: Handles dynamic form rendering and validation.
+2. **Error Interceptor**: Captures and handles HTTP errors globally.
+3. **Services**: Manages data retrieval and form submission.
+4. **Models**: Defines data structures for forms and submissions.
+5. **Unit Testing**: Ensures reliability and correctness of the components and services.
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Project Structure
 
-```bash
-ng generate component component-name
-```
+### **Components**
+#### DynamicFormComponent
+- **File**: `src/app/components/dynamic-form/dynamic-form.component.ts`
+- **Responsibilities**:
+  - Renders dynamic forms based on JSON data.
+  - Manages form validations (required fields, regex, min/max length).
+  - Handles password confirmation and mismatch scenarios.
+  - Displays and resolves API errors at the field level.
+  - Submits form data to the backend using `DynamicFormService`.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+### **Services**
+#### DynamicFormService
+- **Responsibilities**:
+  - Fetches JSON data for form fields and configurations.
+  - Submits form data to the backend.
+  - Handles API communication.
 
-## Building
+---
 
-To build the project run:
+### **Interceptors**
+#### ErrorInterceptor
+- **File**: `src/app/interceptors/error.interceptor.ts`
+- **Responsibilities**:
+  - Captures HTTP errors globally.
+  - Prepares error responses for display or further handling in components.
 
-```bash
-ng build
-```
+---
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### **Testing**
+#### Unit Tests
+- **Testing Framework**: Jest.
+- **Coverage**:
+  - **DynamicFormComponent**:
+    - Ensures form is rendered correctly with validations.
+    - Validates password mismatch and error handling.
+    - Verifies method to retrieve data.
+    - Verifies form submission.
+  - **DynamicFormService**:
+    - Tests form data retrieval and submission logic.
 
-## Running unit tests
+---
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Installation & Setup
 
-```bash
-ng test
-```
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/mohammadakradi/form-builder.git
+   cd form-builder
+   ```
 
-## Running end-to-end tests
+2. Install dependencies:
+    ```bash
+    npm install
+    ```
 
-For end-to-end (e2e) testing, run:
+3. Run the development server:
+    ```bash
+    ng serve
+    ```
 
-```bash
-ng e2e
-```
+## Usage
+1.	The dynamic form component will automatically fetch form configurations from the backend.
+2.	Fill out the form based on the displayed fields.
+3.	Click submit to send the data. API responses will be handled and displayed.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Scripts
+- __Start Development Server:__ ng serve
+- __Run Unit Tests:__ npm test
+- __Build for Production:__ ng build --configuration=production
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.

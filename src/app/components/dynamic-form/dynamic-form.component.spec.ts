@@ -19,7 +19,8 @@ describe('DynamicFormComponent', () => {
             { name: 'password', type: 'NEW_PASSWORD', required: true, showConfirmPassword: true }
           ]
         }
-      }))
+      })),
+      submitForm: jest.fn().mockReturnValue(of({ success: true, message: 'Form submitted successfully!' }))
     };
 
     await TestBed.configureTestingModule({
@@ -58,13 +59,17 @@ describe('DynamicFormComponent', () => {
     expect(confirmPasswordControl.errors).toBeNull();
   });
 
-  it('should call onSubmit and log form value', () => {
-    const consoleSpy = jest.spyOn(console, 'log');
+  it('should call onSubmit, invoke submitForm in the service, and handle the response correctly', () => {
+    const dynamicFormServiceSpy = jest.spyOn(dynamicFormServiceMock, 'submitForm').mockReturnValue(
+      of({ success: true, message: 'Form submitted successfully!' })
+    );
+
     component.formGroup.controls['username'].setValue('testuser');
     component.formGroup.controls['password'].setValue('password123');
     component.formGroup.controls['confirmPassword'].setValue('password123');
+
     component.onSubmit();
-    expect(consoleSpy).toHaveBeenCalledWith({
+    expect(dynamicFormServiceSpy).toHaveBeenCalledWith({
       username: 'testuser',
       password: 'password123',
       confirmPassword: 'password123'

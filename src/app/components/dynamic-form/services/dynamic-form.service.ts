@@ -7,13 +7,13 @@ import { FormBuilderJsonModel } from '../models/dynamic-form.model';
   providedIn: 'root'
 })
 export class DynamicFormService {
-  private _formJsonUrl = 'assets/form-json-data.json';
+  public formJsonUrl = 'assets/form-json-data.json';
 
   constructor(
     private _http: HttpClient
   ) { }
 
   getFormJson(): Observable<FormBuilderJsonModel> {
-    return this._http.get<FormBuilderJsonModel>(this._formJsonUrl)
+    return this._http.get<FormBuilderJsonModel>(this.formJsonUrl)
   }
 }

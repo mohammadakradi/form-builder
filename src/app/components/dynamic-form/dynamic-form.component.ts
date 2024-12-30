@@ -36,7 +36,7 @@ export class DynamicFormComponent {
   passwordMismatchErrorMessage: string = "Password Doesn't Match";
 
   constructor(
-    private _formBuilder: FormBuilder,
+    public _formBuilder: FormBuilder,
     private _dynamicFormService: DynamicFormService
   ) { }
 
@@ -53,7 +53,6 @@ export class DynamicFormComponent {
         alert('Something went wrong')
       }
     })
-
     this.subscriptions.push(getData)
   }
 

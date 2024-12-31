@@ -11,7 +11,7 @@ import { action } from '@storybook/addon-actions';
 export default {
     title: 'Components/DynamicForm',
     component: DynamicFormComponent,
-    tags: ['form', 'dynamic'],
+    tags: ['autodocs'],
     render: (args) => ({
         component: DynamicFormComponent,
         props: {
@@ -62,7 +62,8 @@ export const Primary: DynamicFormStory = {
                     required: true,
                     minLength: 8,
                     maxLength: 20,
-                    type: 'password',
+                    info: 'Password must be at least 8 characters long',
+                    type: 'NEW_PASSWORD',
                 },
             ],
             forms: [],

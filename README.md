@@ -93,6 +93,7 @@ The project is designed with modularity and scalability in mind. It includes the
 - __Start Development Server:__ ng serve
 - __Run Unit Tests:__ npm test
 - __Build for Production:__ ng build --configuration=production
+- __Run Storybook:__ npm run storybook
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.

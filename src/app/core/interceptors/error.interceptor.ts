@@ -3,6 +3,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { validateHorizontalPosition } from '@angular/cdk/overlay';
 
 export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
     const snackBar = inject(MatSnackBar);
@@ -31,6 +32,7 @@ export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, n
 
             snackBar.open(errorMessage, 'Close', {
                 duration: 3000,
+                verticalPosition: 'top'
             });
 
             return throwError(() => error);

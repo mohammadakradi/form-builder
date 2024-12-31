@@ -52,11 +52,15 @@ The project is designed with modularity and scalability in mind. It includes the
 #### Unit Tests
 - **Testing Framework**: Jest.
 - **Coverage**:
+  - **SignUpComponent**:
+    - Ensures form is rendered correctly with validations.
+    - Verifies method to retrieve data.
+    - Verifies form submission.
   - **DynamicFormComponent**:
     - Ensures form is rendered correctly with validations.
     - Validates password mismatch and error handling.
-    - Verifies method to retrieve data.
-    - Verifies form submission.
+    - Verifies method to create form group.
+    - Verifies onSubmit emitter emits correct form value model.
   - **DynamicFormService**:
     - Tests form data retrieval and submission logic.
 

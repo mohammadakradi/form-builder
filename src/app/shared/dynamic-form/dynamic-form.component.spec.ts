@@ -15,8 +15,8 @@ describe('DynamicFormComponent', () => {
       getFormJson: jest.fn().mockReturnValue(of({
         form: {
           fields: [
-            { name: 'username', type: 'text', required: true },
-            { name: 'password', type: 'NEW_PASSWORD', required: true, showConfirmPassword: true }
+            { name: 'username', type: 'text', required: true, '@type': 'string', title: 'Username', description: '', errorMessage: '', minLength: 0, maxLength: 100 },
+            { name: 'password', type: 'NEW_PASSWORD', required: true, showConfirmPassword: true, '@type': 'string', title: 'Password', description: '', errorMessage: '', minLength: 8, maxLength: 20 }
           ]
         }
       })),
@@ -32,6 +32,18 @@ describe('DynamicFormComponent', () => {
 
     fixture = TestBed.createComponent(DynamicFormComponent);
     component = fixture.componentInstance;
+    component.formJsonData = {
+      name: 'testForm',
+      title: 'Test Form',
+      submitLabel: 'Submit',
+      nestedFormShowType: 'accordion',
+      fieldDescriptionShowType: 'tooltip',
+      forms: [],
+      fields: [
+        { name: 'username', type: 'text', required: true, '@type': 'string', title: 'Username', description: '', errorMessage: '', minLength: 0, maxLength: 100 },
+        { name: 'password', type: 'NEW_PASSWORD', required: true, showConfirmPassword: true, '@type': 'string', title: 'Password', description: '', errorMessage: '', minLength: 8, maxLength: 20 }
+      ]
+    };
     fixture.detectChanges();
   });
 
@@ -59,26 +71,18 @@ describe('DynamicFormComponent', () => {
     expect(confirmPasswordControl.errors).toBeNull();
   });
 
-  it('should call onSubmit, invoke submitForm in the service, and handle the response correctly', () => {
-    const dynamicFormServiceSpy = jest.spyOn(dynamicFormServiceMock, 'submitForm').mockReturnValue(
-      of({ success: true, message: 'Form submitted successfully!' })
-    );
+  it('should call submit, invoke submitForm in the service, and handle the response correctly', () => {
+    const onSubmitSpy = jest.spyOn(component.onSubmit, 'emit');
 
     component.formGroup.controls['username'].setValue('testuser');
     component.formGroup.controls['password'].setValue('password123');
     component.formGroup.controls['confirmPassword'].setValue('password123');
 
-    component.onSubmit();
-    expect(dynamicFormServiceSpy).toHaveBeenCalledWith({
+    component.submit();
+    expect(onSubmitSpy).toHaveBeenCalledWith({
       username: 'testuser',
       password: 'password123',
       confirmPassword: 'password123'
     });
-  });
-
-  it('should unsubscribe from all subscriptions on destroy', () => {
-    const unsubscribeSpy = jest.spyOn(component.subscriptions[0], 'unsubscribe');
-    component.ngOnDestroy();
-    expect(unsubscribeSpy).toHaveBeenCalled();
   });
 });

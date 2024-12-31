@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DynamicFormService } from './services/dynamic-form.service';
 import { DynamicFormModel, SubmitFormModel } from './models/dynamic-form.model';
@@ -23,8 +23,9 @@ import { MatButton } from '@angular/material/button';
   styleUrl: './dynamic-form.component.scss'
 })
 export class DynamicFormComponent {
+  @Input() formJsonData!: DynamicFormModel;
+  @Output() onSubmit = new EventEmitter<SubmitFormModel>();
   formGroup: FormGroup = new FormGroup({});
-  formJsonData!: DynamicFormModel;
   subscriptions: Subscription[] = [];
   showPassword: boolean = false;
   showConfirmPassword: boolean = false;
@@ -40,20 +41,8 @@ export class DynamicFormComponent {
     private _dynamicFormService: DynamicFormService
   ) { }
 
-  ngOnInit(): void {
-    this.getFormJson()
-  }
-
-  getFormJson() {
-    let getData = this._dynamicFormService.getFormJson().subscribe(res => {
-      if (res) {
-        this.formJsonData = res.form;
-        this.createFormGroup();
-      } else {
-        alert('Something went wrong')
-      }
-    })
-    this.subscriptions.push(getData)
+  ngOnInit() {
+    this.createFormGroup();
   }
 
   createFormGroup() {
@@ -97,18 +86,7 @@ export class DynamicFormComponent {
     }
   }
 
-  onSubmit() {
-    this._dynamicFormService.submitForm(this.formGroup.value).subscribe({
-      next: (resp) => {
-        console.log(resp)
-      },
-      error: (errorResponse) => {
-        this.handleApiErrors(errorResponse)
-      }
-    })
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe())
+  submit() {
+    this.onSubmit.emit(this.formGroup.value)
   }
 }

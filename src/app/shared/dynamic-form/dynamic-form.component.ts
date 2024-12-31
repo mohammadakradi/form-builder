@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DynamicFormService } from './services/dynamic-form.service';
 import { DynamicFormModel, SubmitFormModel } from './models/dynamic-form.model';
 import { Subscription } from 'rxjs';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -38,7 +37,6 @@ export class DynamicFormComponent {
 
   constructor(
     public _formBuilder: FormBuilder,
-    private _dynamicFormService: DynamicFormService
   ) { }
 
   ngOnInit() {
